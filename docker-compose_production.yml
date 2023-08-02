@@ -1,0 +1,8 @@
+version: '3.7'
+
+services:
+  frontend-production:
+    image: registry.canna.lan/tonnage/tonnage-hrtsl-frontend:latest
+    container_name: hrtslfront_production
+    ports:
+      - '5000:80'

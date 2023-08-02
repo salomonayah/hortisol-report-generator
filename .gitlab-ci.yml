@@ -1,0 +1,59 @@
+stages:
+  - build_docker
+  - deploy_hrtslfront
+  - deploy_production
+build_dev:
+  stage: build_docker
+  script:
+    - cat $DEV_ENV > .env
+    - docker build -t hrtslfrontdev:latest ./
+    - docker build -t hrtslfront:$CI_COMMIT_SHORT_SHA ./
+  only:
+    - dev
+  tags:
+    - hrtsl-front-dev
+
+Deploy_dev:
+  stage: deploy_hrtslfront
+  script: 
+    - docker compose -f docker-compose_dev.yml up -d --force-recreate
+  only:
+    - dev
+  tags:
+    - hrtsl-front-dev
+
+build_staging:
+  stage: build_docker
+  script:
+    - cat $STAGE_ENV > .env
+    - docker build -t hrtslfront:$CI_COMMIT_SHORT_SHA ./
+    - docker build -t hrtslfrontstaging:latest ./
+    - cat $PROD_ENV > .env
+    - docker build -t $CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:latest .
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker push $CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:latest
+  only:
+    - staging
+  tags:
+    - hrtsl-front-dev
+
+Deploy_staging:
+  stage: deploy_hrtslfront
+  script: 
+    - docker compose -f docker-compose_staging.yml up -d --force-recreate
+  only: 
+    - staging
+  tags:
+    - hrtsl-front-dev
+
+Deploy_production:
+  when: manual
+  stage: deploy_production
+  script: 
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker pull $CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:latest
+    - docker compose -f docker-compose_production.yml up -d --force-recreate
+  only: 
+    - staging
+  tags:
+    - production

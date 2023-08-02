@@ -1,0 +1,8 @@
+version: '3.7'
+
+services:
+  frontend-dev:
+    image: hrtslfront:latest
+    container_name: hrtslfront_dev
+    ports:
+      - '80:80'

@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background: #f8f8fc;
+}
+
+.base-button {
+  filter: drop-shadow(0px 2px 20px #80b2b0);
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px white inset !important;
+}
+
+.table-wrp {
+  max-height: 75vh;
+  overflow-y: auto;
+  display: block;
+}
+
+thead {
+  position: sticky;
+  top: 0;
+}
+
+.footer-table {
+  position: sticky;
+  bottom: 0;
+  background: azure;
+  text-align: center;
+}
+
+.header-table:before {
+  /* content: 'a';
+    background: white;
+    top: 0;
+    position: absolute;
+    height: 67Px;
+    width: 100%; */
+}
+
+.header-table > th:first-child {
+  width: 100px;
+}
+
+.svg-sort {
+  transform: scale(1.5);
+}

@@ -1,0 +1,8 @@
+version: '3.7'
+
+services:
+  frontend-staging:
+    image: hrtslfrontstaging:latest
+    container_name: hrtslfront_staging
+    ports:
+      - '8181:80'
